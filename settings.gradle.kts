@@ -1,0 +1,1 @@
+rootProject.name = "Mukminov_11-400_HW_2_course_2_sem"
