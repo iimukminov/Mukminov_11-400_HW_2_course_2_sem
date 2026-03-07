@@ -58,13 +58,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto save(UserDto user) {
-        User user2 = new User();
-        user2.setId(null);
-        user2.setName(user.getName());
-        user2.setLastname(user.getLastname());
-        user2.setEmail(user.getEmail());
-        User user1 = userRepositoryJpa.saveAndFlush(user2);
+    public UserDto save(User user) {
+        User user1 = userRepositoryJpa.saveAndFlush(user);
         return new UserDto(
                 user1.getId(),
                 user1.getName(),
