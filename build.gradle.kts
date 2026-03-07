@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    id("application")
     id("war")
 }
 
@@ -13,6 +12,7 @@ val hibernateVersion: String by project
 val postgresqlVersion: String by project
 val freemarkerVersion: String by project
 val hikaricpVersion: String by project
+val springDataVersion: String by project
 
 repositories {
     mavenCentral()
@@ -23,6 +23,7 @@ dependencies {
     implementation("org.springframework:spring-jdbc:$springVersion")
     implementation("org.springframework:spring-orm:$springVersion")
     implementation("org.springframework:spring-context-support:$springVersion")
+    implementation("org.springframework.data:spring-data-jpa:$springDataVersion")
     implementation("jakarta.servlet:jakarta.servlet-api:$jakartaVersion")
     implementation("org.hibernate.orm:hibernate-core:$hibernateVersion")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
@@ -35,8 +36,4 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-}
-
-application {
-   mainClass = "JavaSourceMerger"
 }

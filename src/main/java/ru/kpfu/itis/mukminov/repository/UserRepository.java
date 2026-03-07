@@ -1,24 +1,21 @@
 package ru.kpfu.itis.mukminov.repository;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kpfu.itis.mukminov.model.User;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class UserRepository {
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByName(String name);
+    Optional<User> findByEmail(String email);
 
-    private final SessionFactory sessionFactory;
+    Optional<User> getUserByName(String name);
 
-    public UserRepository(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    @Query(value = "select * from users u where u.name = ?1", nativeQuery = true)
+    Optional<User> getUserByNameNative(String name);
 
-    public List<User> findAll() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from User", User.class).list();
-    }
+
 }
