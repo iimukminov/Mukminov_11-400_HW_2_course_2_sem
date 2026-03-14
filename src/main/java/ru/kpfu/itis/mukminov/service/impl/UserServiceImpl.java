@@ -1,14 +1,18 @@
 package ru.kpfu.itis.mukminov.service.impl;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kpfu.itis.mukminov.dto.UserDto;
+import ru.kpfu.itis.mukminov.model.Role;
 import ru.kpfu.itis.mukminov.model.User;
+import ru.kpfu.itis.mukminov.repository.RoleRepository;
 import ru.kpfu.itis.mukminov.repository.UserRepository;
 import ru.kpfu.itis.mukminov.repository.UserRepositoryHibernate;
 import ru.kpfu.itis.mukminov.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,10 +20,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepositoryHibernate userRepositoryHibernate;
     private final UserRepository userRepositoryJpa;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
-    public UserServiceImpl(UserRepositoryHibernate userRepositoryHibernate,  UserRepository userRepositoryJpa) {
+    public UserServiceImpl(UserRepositoryHibernate userRepositoryHibernate,
+                           UserRepository userRepositoryJpa,
+                           PasswordEncoder passwordEncoder,
+                           RoleRepository roleRepository) {
         this.userRepositoryHibernate = userRepositoryHibernate;
         this.userRepositoryJpa = userRepositoryJpa;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -59,12 +70,28 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto save(User user) {
-        User user1 = userRepositoryJpa.saveAndFlush(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        Optional<Role> existingRole = roleRepository.findByName("ROLE_USER");
+        Role userRole;
+
+        if (existingRole.isPresent()) {
+            userRole = existingRole.get();
+        } else {
+            userRole = new Role();
+            userRole.setName("ROLE_USER");
+            userRole = roleRepository.save(userRole);
+        }
+
+        user.setRoles(List.of(userRole));
+
+        User savedUser = userRepositoryJpa.saveAndFlush(user);
+
         return new UserDto(
-                user1.getId(),
-                user1.getName(),
-                user1.getLastname(),
-                user1.getEmail()
+                savedUser.getId(),
+                savedUser.getName(),
+                savedUser.getLastname(),
+                savedUser.getEmail()
         );
     }
 
