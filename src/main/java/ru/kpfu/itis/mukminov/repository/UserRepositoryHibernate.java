@@ -2,6 +2,7 @@ package ru.kpfu.itis.mukminov.repository;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import ru.kpfu.itis.mukminov.model.User;
@@ -13,7 +14,7 @@ public class UserRepositoryHibernate {
 
     private final SessionFactory sessionFactory;
 
-    public UserRepositoryHibernate(SessionFactory sessionFactory) {
+    public UserRepositoryHibernate(@Qualifier("localSessionFactoryBean") SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
