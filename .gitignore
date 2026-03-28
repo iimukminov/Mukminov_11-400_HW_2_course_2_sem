@@ -56,3 +56,5 @@ buildNumber.properties
 
 ### Logs ###
 *.log
+
+.env

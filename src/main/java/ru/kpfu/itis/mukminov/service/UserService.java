@@ -11,4 +11,5 @@ public interface UserService {
     UserDto save(User user);
     void delete(Long id);
     UserDto update(User user);
+    boolean verifyUser(String code);
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.mukminov.model.Note;
-import ru.kpfu.itis.mukminov.service.CustomUserDetails;
+import ru.kpfu.itis.mukminov.service.security.CustomUserDetails;
 import ru.kpfu.itis.mukminov.service.NoteService;
 
 @Controller

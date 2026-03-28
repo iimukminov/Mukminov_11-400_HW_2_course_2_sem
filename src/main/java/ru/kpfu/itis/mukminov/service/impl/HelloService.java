@@ -1,4 +1,4 @@
-package ru.kpfu.itis.mukminov.service;
+package ru.kpfu.itis.mukminov.service.impl;
 
 import org.springframework.stereotype.Service;
 

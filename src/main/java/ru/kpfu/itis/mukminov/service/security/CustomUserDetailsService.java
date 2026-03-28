@@ -1,4 +1,4 @@
-package ru.kpfu.itis.mukminov.service;
+package ru.kpfu.itis.mukminov.service.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -8,35 +8,34 @@ import ru.kpfu.itis.mukminov.model.Role;
 import ru.kpfu.itis.mukminov.model.User;
 import ru.kpfu.itis.mukminov.repository.RoleRepository;
 import ru.kpfu.itis.mukminov.repository.UserRepository;
-import ru.kpfu.itis.mukminov.repository.UserRepositoryHibernate;
 import ru.kpfu.itis.mukminov.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepositoryHibernate userRepositoryHibernate;
     private final UserRepository userRepositoryJpa;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final EmailService emailService;
 
-    public UserServiceImpl(UserRepositoryHibernate userRepositoryHibernate,
-                           UserRepository userRepositoryJpa,
+    public UserServiceImpl(UserRepository userRepositoryJpa,
                            PasswordEncoder passwordEncoder,
-                           RoleRepository roleRepository) {
-        this.userRepositoryHibernate = userRepositoryHibernate;
+                           RoleRepository roleRepository,
+                           EmailService emailService) {
         this.userRepositoryJpa = userRepositoryJpa;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.emailService = emailService;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UserDto> findAll() {
-//        List<User> users = userRepositoryHibernate.findAll();
         List<User> usersJpa = userRepositoryJpa.findAll();
 
         return usersJpa.stream()
@@ -50,9 +49,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public UserDto findById(Long id) {
-        User user = userRepositoryJpa.findById(id).get();
+        User user = userRepositoryJpa.findById(id).orElseThrow();
         return new UserDto(
                 user.getId(),
                 user.getName(),
@@ -84,8 +83,12 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setRoles(List.of(userRole));
+        user.setVerified(false);
+        user.setVerificationCode(UUID.randomUUID().toString());
 
         User savedUser = userRepositoryJpa.saveAndFlush(user);
+
+        emailService.sendVerificationEmail(savedUser);
 
         return new UserDto(
                 savedUser.getId(),
@@ -98,12 +101,26 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto update(User user) {
-        User user1 = userRepositoryJpa.save(user);
+        User savedUser = userRepositoryJpa.save(user);
         return new UserDto(
-                user1.getId(),
-                user1.getName(),
-                user1.getLastname(),
-                user1.getEmail()
+                savedUser.getId(),
+                savedUser.getName(),
+                savedUser.getLastname(),
+                savedUser.getEmail()
         );
+    }
+
+    @Override
+    @Transactional
+    public boolean verifyUser(String code) {
+        Optional<User> userOpt = userRepositoryJpa.findByVerificationCode(code);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setVerified(true);
+            user.setVerificationCode(null);
+            userRepositoryJpa.save(user);
+            return true;
+        }
+        return false;
     }
 }

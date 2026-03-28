@@ -3,7 +3,7 @@ package ru.kpfu.itis.mukminov.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kpfu.itis.mukminov.service.HelloService;
+import ru.kpfu.itis.mukminov.service.impl.HelloService;
 
 @RestController
 public class HelloController {
