@@ -1,0 +1,186 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="ilyam (generated)" id="1775830330845-1">
+        <createTable tableName="clients">
+            <column autoIncrement="true" name="id" startWith="6" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="clients_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_salt" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-2">
+        <createTable tableName="employees">
+            <column autoIncrement="true" name="id" startWith="5" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="employees_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_salt" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="position" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-3">
+        <createTable tableName="equipments">
+            <column autoIncrement="true" name="id" startWith="10" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="equipments_pkey"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(100)"/>
+            <column name="brand" type="VARCHAR(100)"/>
+            <column name="model" type="VARCHAR(100)"/>
+            <column name="serial_number" type="VARCHAR(255)"/>
+            <column name="description" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-4">
+        <createTable tableName="services">
+            <column autoIncrement="true" name="id" startWith="13" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="services_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-5">
+        <createTable tableName="parts">
+            <column autoIncrement="true" name="id" startWith="19" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="parts_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="quantity_in_stock" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-6">
+        <createTable tableName="repair_orders">
+            <column autoIncrement="true" name="id" startWith="7" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="repair_orders_pkey"/>
+            </column>
+            <column name="equipment_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="technician_id" type="INTEGER"/>
+            <column defaultValue="NEW" name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="problem_description" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="completed_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column defaultValueNumeric="0" name="total_cost" type="numeric(10, 2)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-7">
+        <createTable tableName="order_parts">
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="order_parts_pkey"/>
+            </column>
+            <column name="part_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="order_parts_pkey"/>
+            </column>
+            <column name="quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-8">
+        <addUniqueConstraint columnNames="email" constraintName="clients_email_key" tableName="clients"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-9">
+        <addUniqueConstraint columnNames="phone_number" constraintName="clients_phone_number_key" tableName="clients"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-10">
+        <addUniqueConstraint columnNames="email" constraintName="employees_email_key" tableName="employees"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-11">
+        <addUniqueConstraint columnNames="serial_number" constraintName="equipments_serial_number_key" tableName="equipments"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-12">
+        <addUniqueConstraint columnNames="name" constraintName="services_name_key" tableName="services"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-13">
+        <createTable tableName="order_services">
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="order_services_pkey"/>
+            </column>
+            <column name="service_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="order_services_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-14">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-15">
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="equipments" constraintName="equipments_client_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="clients" validate="true"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-16">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_parts" constraintName="order_parts_order_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="repair_orders" validate="true"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-17">
+        <addForeignKeyConstraint baseColumnNames="part_id" baseTableName="order_parts" constraintName="order_parts_part_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="parts" validate="true"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-18">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_services" constraintName="order_services_order_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="repair_orders" validate="true"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-19">
+        <addForeignKeyConstraint baseColumnNames="service_id" baseTableName="order_services" constraintName="order_services_service_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="services" validate="true"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-20">
+        <addForeignKeyConstraint baseColumnNames="equipment_id" baseTableName="repair_orders" constraintName="repair_orders_equipment_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="equipments" validate="true"/>
+    </changeSet>
+    <changeSet author="ilyam (generated)" id="1775830330845-21">
+        <addForeignKeyConstraint baseColumnNames="technician_id" baseTableName="repair_orders" constraintName="repair_orders_technician_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="employees" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
