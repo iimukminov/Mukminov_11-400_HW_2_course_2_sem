@@ -67,6 +67,7 @@ val jacocoExcludes = listOf(
     "**/ru/kpfu/itis/mukminov/model/**",
     "**/ru/kpfu/itis/mukminov/config/**",
     "**/ru/kpfu/itis/mukminov/service/security/**",
+    "**/ru/kpfu/itis/mukminov/Application*"
 )
 
 tasks.jacocoTestReport {
