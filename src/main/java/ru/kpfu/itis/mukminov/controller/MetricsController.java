@@ -12,11 +12,11 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/metrics")
-public class MonitoringController {
+public class MetricsController {
 
     private final MetricsServiceImpl metricsService;
 
-    public MonitoringController(MetricsServiceImpl metricsService) {
+    public MetricsController(MetricsServiceImpl metricsService) {
         this.metricsService = metricsService;
     }
 
@@ -31,6 +31,7 @@ public class MonitoringController {
     @GetMapping(params = "methodName")
     public String searchMetrics(@RequestParam(name = "methodName", required = false) String methodName, Model model) {
         model.addAttribute("metrics", Map.of(methodName, metricsService.getMetrics(methodName)));
+        model.addAttribute("searchMethod", methodName);
         return "metrics";
     }
 }

@@ -20,7 +20,7 @@
                 <div class="me-3 flex-grow-1">
                     <label for="methodName" class="form-label">Поиск по имени метода:</label>
                     <input type="text" name="methodName" id="methodName" class="form-control"
-                           placeholder="Например: ru.kpfu.itis...UserService.findById"
+                           placeholder="Например: ClassName.methodName"
                            value="${searchedMethod!''}">
                 </div>
                 <div class="me-2">
