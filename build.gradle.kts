@@ -29,6 +29,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("javax.mail:javax.mail-api:1.6.2")
     implementation("org.springframework.security:spring-security-taglibs:${springSecurityVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
 
     implementation("org.liquibase:liquibase-core:4.33.0")
     liquibaseRuntime("org.liquibase:liquibase-core:4.33.0")
